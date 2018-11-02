@@ -1,0 +1,13 @@
+-c
+-I"D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_C/include"
+-I"D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_C/include/arm"
+-I"D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_Runtime/include"
+-I"D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_Runtime/include/arm"
+-I"D:/Programs/NXP/workspace/AEP-WL/chava/chava/include"
+-x assembler-with-cpp
+-O0
+-g3
+-mcpu=cortex-m4
+-mthumb
+-specs=ewl_c9x_noio.specs
+--sysroot="D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2"
