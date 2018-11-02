@@ -61,3 +61,23 @@ void PORT_init (void) {
     PTD->PDOR |= 1<<16 | 1<<15 | 1<<0; /*Due to pull up in the board LEDs, outputs are set in order to turn off the leds.*/
 
 }
+void led_output(int i32_value){
+/*This section divides in 3 blocks the 10 bit output into 3 blocks*/
+unsigned int i8_maskC=0x300; /*Filter 9 to 8 bits*/
+unsigned int i8_maskE=0x0F0; /*Filter 7 to 4 bits*/
+unsigned int i8_maskB=0x00F; /*Filter 3 to 0 bits*/
+
+/*Apply the filters*/
+i8_maskC &= i32_value;
+i8_maskE &= i32_value;
+i8_maskB &= i32_value;
+
+/*Bitshifting for keeping just the important bits*/
+i8_maskC = i8_maskC>>8;
+i8_maskE = i8_maskE>>4;
+
+/*Set the output*/
+PTC->PDOR =  (i8_maskC)<<16;
+PTE->PDOR =  (i8_maskE)<<13;
+PTB->PDOR =  (i8_maskB)<<14;
+}
