@@ -81,7 +81,11 @@ PTC->PDOR =  (i8_maskC)<<16;
 PTE->PDOR =  (i8_maskE)<<13;
 PTB->PDOR =  (i8_maskB)<<14;
 }
-
+void WDOG_disable (void) {
+  WDOG->CNT=0xD928C520;     /* Unlock watchdog */
+  WDOG->TOVAL=0x0000FFFF;   /* Maximum timeout value */
+  WDOG->CS = 0x00002100;    /* Disable watchdog */
+}
 void LPIT0_chan0_init (void) {
   PCC->PCCn[PCC_LPIT_INDEX] = PCC_PCCn_PCS(6);      /* Clock Src = 6 (SPLL2_DIV2_CLK)*/
   PCC->PCCn[PCC_LPIT_INDEX] |= PCC_PCCn_CGC_MASK;   /* Enable clk to LPIT0 regs */
@@ -113,4 +117,3 @@ void LPIT0_chan_end (char timer) {
   LPIT0->MCR = 0x00000002;                            /*Reset the complete timer */
   LPIT0->MCR = 0x00000001;                            /*Timer ready to start*/
 }
-
