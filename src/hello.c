@@ -154,6 +154,31 @@ void go_down (void){
   LPIT0_chan1_init ();
 }
 
+int main(void) {
+  WDOG_disable();        /* Disable WDOG*/
+  SOSC_init_8MHz();      /* Initialize system oscillator for 8 MHz xtal */
+  SPLL_init_160MHz();    /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
+  NormalRUNmode_80MHz(); /* Init clocks: 80 MHz SPLL & core, 40 MHz bus, 20 MHz flash */
+  PORT_init();
+  NVIC_init_IRQs ();        /* Enable desired interrupts and priorities */
+
+  for (;;) {
+	  if((c8_down==0) && (c8_up==0)){
+		  PTD->PSOR|=1<<0;
+		  PTD->PSOR|=1<<16;
+	  }
+      else if(c8_up && (i32_value<1023)){
+		  PTD->PCOR|=1<<0;
+		  PTD->PSOR|=1<<16;
+      }
+      else if(c8_down && (i32_value>0)){
+		  PTD->PSOR|=1<<0;
+		  PTD->PCOR|=1<<16;
+      }
+
+
+  }
+}
 
 void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 {
