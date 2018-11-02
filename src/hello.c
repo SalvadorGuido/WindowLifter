@@ -137,3 +137,19 @@ void LPIT0_chan_end (char timer) {
   LPIT0->MCR = 0x00000002;                            /*Reset the complete timer */
   LPIT0->MCR = 0x00000001;                            /*Timer ready to start*/
 }
+void turn_off (void) {
+  c8_up=0;
+  c8_down=0;
+  LPIT0_chan_end (1);
+  LPIT0_chan_end (0);
+}
+void go_up (void){
+  c8_up=1;
+  c8_down=0;
+  LPIT0_chan1_init ();
+}
+void go_down (void){
+  c8_up=0;
+  c8_down=1;
+  LPIT0_chan1_init ();
+}
