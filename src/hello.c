@@ -113,7 +113,7 @@ void LPIT0_chan0_init (void) {
   LPIT0->MCR  |= 0x00000001;
   LPIT0->MIER |= 0x00000001;                        /* TIE 0 Enabled */
 
-  LPIT0->TMR[0].TVAL =  400000;                ;    /* Chan 0 Timeout period: 0.040M clocks */
+  LPIT0->TMR[0].TVAL =  400000;                	    /* Chan 0 Timeout period: 0.040M clocks */
   LPIT0->TMR[0].TCTRL = 0x0000001;                  /* T_EN=1: Timer channel is enabled */
 
 }
