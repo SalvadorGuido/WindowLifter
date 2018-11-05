@@ -5,6 +5,9 @@
  *      Author: maver
  */
 
+#include "initialization_functions.h"
+
+
 void PORT_init (void) {
 
 	 /*	Pin Description:(FROM MSB TO LSB)
