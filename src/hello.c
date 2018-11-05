@@ -1,5 +1,6 @@
-#include "S32K144.h"          /* include peripheral declarations S32K144 */
 #include "clocks_and_modes.h"
+#include "S32K144.h"          /* include peripheral declarations S32K144 */
+
 volatile unsigned int idle_counter = 0; /* main loop idle counter */
 volatile unsigned int ui32_lpit0_ch0_flag_counter = 0;
 volatile unsigned int ui32_lpit0_ch1_flag_counter = 0;
@@ -163,7 +164,7 @@ int main(void) {
   SPLL_init_160MHz();    /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
   NormalRUNmode_80MHz(); /* Init clocks: 80 MHz SPLL & core, 40 MHz bus, 20 MHz flash */
   PORT_init();
-  NVIC_init_IRQs ();        /* Enable desired interrupts and priorities */
+  NVIC_init_IRQs ();     /* Enable desired interrupts and priorities */
 
   for (;;) {
 	  if((uc8_down==0) && (uc8_up==0)){
