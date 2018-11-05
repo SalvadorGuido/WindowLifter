@@ -18,6 +18,7 @@ int main(void) {
   SOSC_init_8MHz();      /* Initialize system oscillator for 8 MHz xtal */
   SPLL_init_160MHz();    /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
   NormalRUNmode_80MHz(); /* Init clocks: 80 MHz SPLL & core, 40 MHz bus, 20 MHz flash */
+  FILTER_init();
   PORT_init();
   NVIC_init_IRQs ();     /* Enable desired interrupts and priorities */
 
@@ -39,8 +40,6 @@ int main(void) {
 
   }
 }
-
-
 
 void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 {
@@ -94,7 +93,6 @@ void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 	   PORTC->PCR[12] |= (1 << 24);
 	   }
 }
-
 void LPIT0_Ch0_IRQHandler (void) {                                  /* This function measures if the pulse width is greater than 10ms and if it is true, outputs the corresponding signals */
 	LPIT0->MSR |= LPIT_MSR_TIF0_MASK;                               /* Clear LPIT0 timer flag 0 */
 	ui32_lpit0_ch0_flag_counter++;

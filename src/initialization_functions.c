@@ -85,3 +85,10 @@ void WDOG_disable (void) {
   WDOG->TOVAL=0x0000FFFF;   /* Maximum timeout value */
   WDOG->CS = 0x00002100;    /* Disable watchdog */
 }
+
+void FILTER_init (void){
+ PCC-> PCCn[PCC_PORTC_INDEX] = PCC_PCCn_CGC_MASK; /* Enable clock for PORT C */
+ PORTC->DFCR|= (1<<0);  /*0 in the lsb means bus clock for digital filter and 1 in the lsb means lpo clock for digital filter */
+ PORTC->DFWR|=  0x1F;   /*This is the Filter length, which is a 5 bit number */
+ PORTC->DFER|= ((1<<15)|(1<<12)|(1<<13));
+}

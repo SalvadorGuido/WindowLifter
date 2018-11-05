@@ -12,5 +12,6 @@
 void PORT_init (void);
 void NVIC_init_IRQs (void);
 void WDOG_disable (void);
+void FILTER_init (void);
 
 #endif /* INITIALIZATION_FUNCTIONS_H_ */
