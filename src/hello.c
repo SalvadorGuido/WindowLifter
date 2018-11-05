@@ -1,15 +1,16 @@
 #include "S32K144.h"          /* include peripheral declarations S32K144 */
 #include "clocks_and_modes.h"
 volatile unsigned int idle_counter = 0; /* main loop idle counter */
-volatile unsigned int lpit0_ch0_flag_counter = 0;
-volatile unsigned int lpit0_ch1_flag_counter = 0;
-volatile unsigned int lpit0_ch2_flag_counter = 0;
-volatile unsigned int Register;
-volatile unsigned int anti_pinch=0;
-volatile unsigned char c8_up=0;
-volatile unsigned char c8_down=0;
-volatile unsigned int  i32_value=0;
+volatile unsigned int ui32_lpit0_ch0_flag_counter = 0;
+volatile unsigned int ui32_lpit0_ch1_flag_counter = 0;
+volatile unsigned int ui32_lpit0_ch2_flag_counter = 0;
+volatile unsigned int ui8_Register;
+volatile unsigned char uc8_Anti_Pinch=0;
+volatile unsigned char uc8_up=0;
+volatile unsigned char uc8_down=0;
+volatile unsigned int  ui32_value=0;
 volatile int exit_code = 0;
+
 
 
 void PORT_init (void) {
@@ -51,9 +52,9 @@ void PORT_init (void) {
 
     PORTC->PCR[16] = 0x00000100; /* Port C16: MUX = GPIO */
     PORTC->PCR[17] = 0x00000100; /* Port C17: MUX = GPIO */
-    PORTC->PCR[13] = 0x000B0110; /* Port C13 MUX = ALT1, GPIO  (SW3 LED on EVB) */
-    PORTC->PCR[12] = 0x000B0110; /* Port C12: MUX = ALT1, GPIO (SW2 on EVB    ) */
-    PORTC->PCR[15] = 0x00090112; /* Port C15 MUX = ALT1, GPIO, Antipinch  (SW1 On Protoboard) */
+    PORTC->PCR[13] = 0x000B0110; /* Port C13 MUX = ALT1, GPIO  (SW3 on EVB)  both edges interrupt*/
+    PORTC->PCR[12] = 0x000B0110; /* Port C12: MUX = ALT1, GPIO (SW2 on EVB) both edges interrupt*/
+    PORTC->PCR[15] = 0x00090112; /* Port C15 MUX = ALT1, GPIO, Antipinch,(SW1 On Protoboard), Rising Edge interrupt, pull down enabled */
 
     PTC->PDDR &= ~(1<<12);             /*Input Switch 2*/
     PTC->PDDR &= ~(1<<13);             /*Input Switch 3*/
@@ -61,25 +62,25 @@ void PORT_init (void) {
     PTD->PDOR |= 1<<16 | 1<<15 | 1<<0; /*Due to pull up in the board LEDs, outputs are set in order to turn off the leds.*/
 
 }
-void led_output(int i32_value){
+void led_output(int ui32_value){
 /*This section divides in 3 blocks the 10 bit output into 3 blocks*/
 unsigned int i8_maskC=0x300; /*Filter 9 to 8 bits*/
 unsigned int i8_maskE=0x0F0; /*Filter 7 to 4 bits*/
 unsigned int i8_maskB=0x00F; /*Filter 3 to 0 bits*/
 
 /*Apply the filters*/
-i8_maskC &= i32_value;
-i8_maskE &= i32_value;
-i8_maskB &= i32_value;
+i8_maskC &= ui32_value;
+i8_maskE &= ui32_value;
+i8_maskB &= ui32_value;
 
 /*Bitshifting for keeping just the important bits*/
 i8_maskC = i8_maskC>>8;
 i8_maskE = i8_maskE>>4;
 
 /*Set the output*/
-PTC->PDOR =  (i8_maskC)<<16;
-PTE->PDOR =  (i8_maskE)<<13;
-PTB->PDOR =  (i8_maskB)<<14;
+PTC->PDOR =  (i8_maskC)<<16; /*From pin 16 to 17*/
+PTE->PDOR =  (i8_maskE)<<13; /*From pin 13 to 16*/
+PTB->PDOR =  (i8_maskB)<<14; /*From pin 14 to 17*/
 }
 void NVIC_init_IRQs (void) {
 
@@ -132,25 +133,27 @@ void LPIT0_chan2_init (void) {
   LPIT0->TMR[2].TVAL = 200000000;                     /* Chan 2 Timeout period: 20M clocks (5s) */
   LPIT0->TMR[2].TCTRL = 0x0000001;                    /* T_EN=1: Timer channel is enabled */
 }
-void LPIT0_chan_end (char timer) {
+void LPIT0_chan_end (unsigned char timer) {
+  if ((timer<4)&&(timer>=0)){
   LPIT0->CLRTEN |= 1<<timer ;                         /*Finishes the chanel of the timer */
   LPIT0->MCR = 0x00000002;                            /*Reset the complete timer */
   LPIT0->MCR = 0x00000001;                            /*Timer ready to start*/
+  }
 }
 void turn_off (void) {
-  c8_up=0;
-  c8_down=0;
+  uc8_up=0;
+  uc8_down=0;
   LPIT0_chan_end (1);
   LPIT0_chan_end (0);
 }
 void go_up (void){
-  c8_up=1;
-  c8_down=0;
+  uc8_up=1;
+  uc8_down=0;
   LPIT0_chan1_init ();
 }
 void go_down (void){
-  c8_up=0;
-  c8_down=1;
+  uc8_up=0;
+  uc8_down=1;
   LPIT0_chan1_init ();
 }
 
@@ -163,34 +166,34 @@ int main(void) {
   NVIC_init_IRQs ();        /* Enable desired interrupts and priorities */
 
   for (;;) {
-	  if((c8_down==0) && (c8_up==0)){
+	  if((uc8_down==0) && (uc8_up==0)){
 		  PTD->PSOR|=1<<0;
 		  PTD->PSOR|=1<<16;
 	  }
-      else if(c8_up && (i32_value<1023)){
+      else if(uc8_up && (ui32_value<1023)){
 		  PTD->PCOR|=1<<0;
 		  PTD->PSOR|=1<<16;
       }
-      else if(c8_down && (i32_value>0)){
+      else if(uc8_down && (ui32_value>0)){
 		  PTD->PSOR|=1<<0;
 		  PTD->PCOR|=1<<16;
       }
+      else{};
 
 
   }
 }
-
 void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 {
-	Register=PORTC->ISFR;
-	if (Register & 1<<15)                       /*If interrupt has been caused by sw1 (Antipinch) */
+	ui8_Register=PORTC->ISFR;
+	if (ui8_Register & 1<<15)                       /*If interrupt has been caused by sw1 (Antipinch) */
 	  {
 
-		if(c8_up){                             /*If the interrupt is made while the window is moving up */
+		if(uc8_up){                             /*If the interrupt is made while the window is moving up */
 			PORTC->PCR[15] |= (1 << 24);       /*Clean Antipinch   Interrupt flag */
 			PORTC->PCR[13] |= (1 << 24);       /*Clean Moving Down Interrupt flag */
 			PORTC->PCR[12] |= (1 << 24);       /*Clean Moving Up   Interrupt flag */
-			lpit0_ch0_flag_counter=0;          /*Initialize ch0 flag counter */
+			ui32_lpit0_ch0_flag_counter=0;          /*Initialize ch0 flag counter */
 			LPIT0_chan0_init();                /*Initialize ch0 */
 		}
 		else {                                 /*Antipinch pressed while other condition*/
@@ -198,30 +201,30 @@ void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 		}
 
 	  }
-	else if((Register & 1<<12)&&(anti_pinch==0) )                    /*If interrupt has been caused by sw 2 (Button Up) and the antipinch function is not being executed */
+	else if((ui8_Register & 1<<12)&&(uc8_Anti_Pinch==0) )                    /*If interrupt has been caused by sw 2 (Button Up) and the antipinch function is not being executed */
 	  {
 		PORTC->PCR[12] |= (1 << 24);                                /*Clean the interrupt flag*/
 		if ((PTC->PDIR & (1<<12)&& ((PTC->PDIR&(1<<13))==0)))       /*If switch2 is pressed and switch 3 is not pressed*/
 		{
-			lpit0_ch0_flag_counter=0;                               /*Initialize ch0 flag counter */
+			ui32_lpit0_ch0_flag_counter=0;                               /*Initialize ch0 flag counter */
 			LPIT0_chan0_init();                                     /* Initialize ch0  */
 		}
 	   else if((PTC->PDIR & (1<<12))==0){                           /*If there is a falling edge in sw2*/
-		   if(lpit0_ch0_flag_counter>=50){                          /*Check if the pulse width is greater or equal than 500ms*/
+		   if((ui32_lpit0_ch0_flag_counter>=50)||(ui32_lpit0_ch0_flag_counter==0)){                          /*Check if the pulse width is greater or equal than 500ms*/
 			   turn_off ();                                         /*If the pulse is greater or equal than 500ms turn off the moving up when the switch is released*/
 		   }
 	   }
 	  }
-	else if (Register & 1<<13&&(anti_pinch==0))                      /*If interrupt has been caused by sw3 (Button Down) and the antipinch function is not on execution */
+	else if (ui8_Register & 1<<13&&(uc8_Anti_Pinch==0))                      /*If interrupt has been caused by sw3 (Button Down) and the antipinch function is not on execution */
 	   {
 
 		PORTC->PCR[13] |= (1 << 24);                                /*Clean the interrupt flag*/
 		if (PTC->PDIR & (1<<13)&& ((PTC->PDIR&(1<<12))==0)){        /*If switch2 is pressed and switch 3 is not pressed*/
-			lpit0_ch0_flag_counter=0;                               /* Start ch0 timeout counter  */
+			ui32_lpit0_ch0_flag_counter=0;                               /* Start ch0 timeout counter  */
 			LPIT0_chan0_init();                                     /* Initialize ch0  */
 		}
 		else if((PTC->PDIR & (1<<13))==0){                          /*If there is a falling edge in sw3*/
-			if(lpit0_ch0_flag_counter>=50){                         /*Check if the pulse width is greater or equal than 500ms*/
+		    if((ui32_lpit0_ch0_flag_counter>=50)||(ui32_lpit0_ch0_flag_counter==0)){                         /*Check if the pulse width is greater or equal than 500ms*/
 				turn_off ();                                        /*If the pulse is greater or equal than 500ms turn off the moving down when the switch is released*/
 			}
 		}
@@ -235,25 +238,25 @@ void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 
 void LPIT0_Ch0_IRQHandler (void) {                                  /* This function measures if the pulse width is greater than 10ms and if it is true, outputs the corresponding signals */
 	LPIT0->MSR |= LPIT_MSR_TIF0_MASK;                               /* Clear LPIT0 timer flag 0 */
-	lpit0_ch0_flag_counter++;
-  if (lpit0_ch0_flag_counter==1){                                   /* if 10ms had occur since one of the 3 switches were pressed */
+	ui32_lpit0_ch0_flag_counter++;
+  if (ui32_lpit0_ch0_flag_counter==1){                                   /* if 10ms had occur since one of the 3 switches were pressed */
 	  if(PTC->PDIR & (1<<15)){                                      /* antipinch button is pressed and pulse width is already 10ms */
-		  anti_pinch=1;                                             /* antipinch flag is set */
+		  uc8_Anti_Pinch=1;                                             /* antipinch flag is set */
 		  go_down();                                                /* The movement downward is started*/
 	  }
 	  else if ((PTC->PDIR & (1<<12))&& ((PTC->PDIR&(1<<13))==0)){   /*If SW2 is pressed (moving up) and SW3 (moving down) is not pressed */
-	  if ((c8_up==0) &&(c8_down==0)){                               /*If the lifter is not on movement*/
+	  if ((uc8_up==0) &&(uc8_down==0)){                               /*If the lifter is not on movement*/
 		  go_up();                                                  /*If the lifter will start moving up*/
 	  }
-	  else if(c8_down==1){                                          /*If the lifter is on downward movement*/
+	  else if(uc8_down==1){                                          /*If the lifter is on downward movement*/
 		  turn_off();                                               /*The lifter will cancel all the movements*/
 	  }
   }
 	else if ((PTC->PDIR & (1<<13))&& ((PTC->PDIR&(1<<12))==0)){     /*If SW3 is pressed (moving down)and SW2 (moving up) is not pressed */
-	  if ((c8_down==0)&&(c8_up==0)){                                /*If the lifter is not on movement*/
+	  if ((uc8_down==0)&&(uc8_up==0)){                                /*If the lifter is not on movement*/
 			  go_down();                                            /*The lift will star moving downward*/
 		  }
-		  else if(c8_up==1){                                        /*If the lifter is on downward movement*/
+		  else if(uc8_up==1){                                        /*If the lifter is on downward movement*/
 			  turn_off();                                           /*The lifter will cancel all the movements*/
 		  }
 	  }
@@ -263,22 +266,22 @@ void LPIT0_Ch0_IRQHandler (void) {                                  /* This func
 void LPIT0_Ch1_IRQHandler (void) {
   LPIT0->MSR |= LPIT_MSR_TIF1_MASK;                                 /* Clear LPIT0 timer flag 1 */
 
-  if (c8_up && (i32_value<1023)){                                   /*Move the Window Up*/
-  i32_value <<= 1 ;
-  i32_value++;
+  if (uc8_up && (ui32_value<1023)){                                   /*Move the Window Up*/
+  ui32_value <<= 1 ;
+  ui32_value++;
   }
-  else if (c8_down && (i32_value>0)){                               /*Move the Window Down*/
-  i32_value >>= 1 ;
+  else if (uc8_down && (ui32_value>0)){                               /*Move the Window Down*/
+  ui32_value >>= 1 ;
   }
-  else if ((c8_up==0) && (c8_down==0)){                             /*Finish the movement*/
+  else if ((uc8_up==0) && (uc8_down==0)){                             /*Finish the movement*/
   turn_off();
   }
-  lpit0_ch1_flag_counter++;         /* Increment LPIT0 timeout counter */
-  led_output(i32_value);
-  if ((i32_value==0) || (i32_value==1023)){
+  ui32_lpit0_ch1_flag_counter++;         /* Increment LPIT0 timeout counter */
+  led_output(ui32_value);
+  if ((ui32_value==0) || (ui32_value==1023)){
   turn_off();
   }
-  if((i32_value==0)&&(anti_pinch==1)){                              /*Finish the movement*/
+  if((ui32_value==0)&&(uc8_Anti_Pinch==1)){                              /*Finish the movement*/
 	  turn_off();
 	  LPIT0_chan2_init();
 
@@ -287,8 +290,8 @@ void LPIT0_Ch1_IRQHandler (void) {
 }
 void LPIT0_Ch2_IRQHandler (void) {
   LPIT0->MSR |= LPIT_MSR_TIF2_MASK; /* Clear LPIT0 timer flag 2 */
-  lpit0_ch2_flag_counter++;         /* Increase ch2 timeout counter  */
-  anti_pinch=0;                     /* Disable antipinch flag*/
+  ui32_lpit0_ch2_flag_counter++;         /* Increase ch2 timeout counter  */
+  uc8_Anti_Pinch=0;                     /* Disable antipinch flag*/
   LPIT0_chan_end (2);
   LPIT0_chan_end (1);
   LPIT0_chan_end (0);
