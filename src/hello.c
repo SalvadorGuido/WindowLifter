@@ -18,9 +18,9 @@ volatile int exit_code = 0;
 
 void led_output(int ui32_value){
 /*This section divides in 3 blocks the 10 bit output into 3 blocks*/
-unsigned int i8_maskC=0x300; /*Filter 9 to 8 bits*/
-unsigned int i8_maskE=0x0F0; /*Filter 7 to 4 bits*/
-unsigned int i8_maskB=0x00F; /*Filter 3 to 0 bits*/
+unsigned int i8_maskC=PORTC_MASK_FILTER; /*Filter 9 to 8 bits*/
+unsigned int i8_maskE=PORTE_MASK_FILTER; /*Filter 7 to 4 bits*/
+unsigned int i8_maskB=PORTB_MASK_FILTER; /*Filter 3 to 0 bits*/
 
 /*Apply the filters*/
 i8_maskC &= ui32_value;
