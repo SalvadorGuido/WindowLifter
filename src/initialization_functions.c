@@ -6,7 +6,7 @@
  */
 
 #include "initialization_functions.h"
-
+#include "S32K144.h"
 
 void PORT_init (void) {
 

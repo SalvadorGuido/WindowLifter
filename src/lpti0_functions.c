@@ -7,7 +7,7 @@
  */
 
 #include "lpti0_functions.h"
-
+#include "S32K144.h"
 void LPIT0_chan0_init (void) {
   PCC->PCCn[PCC_LPIT_INDEX] = PCC_PCCn_PCS(6);      /* Clock Src = 6 (SPLL2_DIV2_CLK)*/
   PCC->PCCn[PCC_LPIT_INDEX] |= PCC_PCCn_CGC_MASK;   /* Enable clk to LPIT0 regs */

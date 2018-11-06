@@ -7,7 +7,7 @@
 
 
 /* Macros for PORT_init function*/
-
+#include "S32K144.h"
 #define MUX_GPIO 		0x00000100
 #define MUX_GPIO_UD_INT 0x000B0110
 #define MUX_GPIO_U_ANTI	0x00090112
