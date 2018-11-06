@@ -95,7 +95,6 @@ void FILTER_init (void){
  PORTC->DFER|= ((1<<15)|(1<<12)|(1<<13));
 }
 
-
 void MICROCONTROLLER_init(void){
 	  WDOG_disable();        /* Disable WDOG*/
 	  SOSC_init_8MHz();      /* Initialize system oscillator for 8 MHz xtal */

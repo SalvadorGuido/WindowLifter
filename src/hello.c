@@ -1,7 +1,7 @@
 #include "clocks_and_modes.h"
 #include "initialization_functions.h"
 #include "output_functions.h"
-#include "macros.c"
+#include "macros.h"
 #include "S32K144.h"          /* include peripheral declarations S32K144 */
 
 volatile unsigned int idle_counter = 0; /* main loop idle counter */
