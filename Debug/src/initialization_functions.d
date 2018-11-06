@@ -1,4 +1,4 @@
-src/hello.o: ../src/hello.c \
+src/initialization_functions.o: ../src/initialization_functions.c \
  D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_C/include/lib_c99.prefix \
  D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_C/include/common.prefix \
  D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/EWL_C/include/ewl_c_version.h \
