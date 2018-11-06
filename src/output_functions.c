@@ -4,7 +4,7 @@
  *  Created on: Nov 5, 2018
  *      Author: maver
  */
-
+#include "S32K144.h"
 
 void led_output(int ui32_value){
 /*This section divides in 3 blocks the 10 bit output into 3 blocks*/

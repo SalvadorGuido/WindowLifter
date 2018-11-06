@@ -4,8 +4,10 @@
  *  Created on: Nov 5, 2018
  *      Author: maver
  */
-
+#include "clocks_and_modes.h"
 #include "initialization_functions.h"
+#include "output_functions.h"
+#include "macros.c"
 #include "S32K144.h"
 
 void PORT_init (void) {
@@ -92,3 +94,15 @@ void FILTER_init (void){
  PORTC->DFWR|=  0x1F;   /*This is the Filter length, which is a 5 bit number */
  PORTC->DFER|= ((1<<15)|(1<<12)|(1<<13));
 }
+
+
+void MICROCONTROLLER_init(void){
+	  WDOG_disable();        /* Disable WDOG*/
+	  SOSC_init_8MHz();      /* Initialize system oscillator for 8 MHz xtal */
+	  SPLL_init_160MHz();    /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
+	  NormalRUNmode_80MHz(); /* Init clocks: 80 MHz SPLL & core, 40 MHz bus, 20 MHz flash */
+	  FILTER_init();
+	  PORT_init();
+	  NVIC_init_IRQs ();     /* Enable desired interrupts and priorities */
+}
+
