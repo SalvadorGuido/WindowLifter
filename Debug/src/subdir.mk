@@ -10,7 +10,6 @@ C_SRCS_QUOTED += \
 "../src/hello.c" \
 "../src/initialization_functions.c" \
 "../src/lpti0_functions.c" \
-"../src/macros.c" \
 "../src/output_functions.c" \
 
 C_SRCS += \
@@ -18,7 +17,6 @@ C_SRCS += \
 ../src/hello.c \
 ../src/initialization_functions.c \
 ../src/lpti0_functions.c \
-../src/macros.c \
 ../src/output_functions.c \
 
 OBJS_OS_FORMAT += \
@@ -26,7 +24,6 @@ OBJS_OS_FORMAT += \
 ./src/hello.o \
 ./src/initialization_functions.o \
 ./src/lpti0_functions.o \
-./src/macros.o \
 ./src/output_functions.o \
 
 C_DEPS_QUOTED += \
@@ -34,7 +31,6 @@ C_DEPS_QUOTED += \
 "./src/hello.d" \
 "./src/initialization_functions.d" \
 "./src/lpti0_functions.d" \
-"./src/macros.d" \
 "./src/output_functions.d" \
 
 OBJS += \
@@ -42,7 +38,6 @@ OBJS += \
 ./src/hello.o \
 ./src/initialization_functions.o \
 ./src/lpti0_functions.o \
-./src/macros.o \
 ./src/output_functions.o \
 
 OBJS_QUOTED += \
@@ -50,7 +45,6 @@ OBJS_QUOTED += \
 "./src/hello.o" \
 "./src/initialization_functions.o" \
 "./src/lpti0_functions.o" \
-"./src/macros.o" \
 "./src/output_functions.o" \
 
 C_DEPS += \
@@ -58,7 +52,6 @@ C_DEPS += \
 ./src/hello.d \
 ./src/initialization_functions.d \
 ./src/lpti0_functions.d \
-./src/macros.d \
 ./src/output_functions.d \
 
 
@@ -95,17 +88,9 @@ src/lpti0_functions.o: ../src/lpti0_functions.c
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/macros.o: ../src/macros.c
-	@echo 'Building file: $<'
-	@echo 'Executing target #8 $<'
-	@echo 'Invoking: Standard S32DS C Compiler'
-	arm-none-eabi-gcc "@src/macros.args" -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "src/macros.o" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
 src/output_functions.o: ../src/output_functions.c
 	@echo 'Building file: $<'
-	@echo 'Executing target #9 $<'
+	@echo 'Executing target #8 $<'
 	@echo 'Invoking: Standard S32DS C Compiler'
 	arm-none-eabi-gcc "@src/output_functions.args" -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "src/output_functions.o" "$<"
 	@echo 'Finished building: $<'

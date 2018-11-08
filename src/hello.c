@@ -1,5 +1,6 @@
 #include "clocks_and_modes.h"
 #include "initialization_functions.h"
+#include "lpti0_functions.h"
 #include "output_functions.h"
 #include "macros.h"
 #include "S32K144.h"          /* include peripheral declarations S32K144 */
@@ -100,7 +101,7 @@ void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 	else if((ui8_Register & 1<<12)&&(uc8_Anti_Pinch==0) )                    /*If interrupt has been caused by sw 2 (Button Up) and the antipinch function is not being executed */
 	  {
 		PORTC->PCR[12] |= (1 << 24);                                /*Clean the interrupt flag*/
-		if ((PTC->PDIR & (1<<12)&& ((PTC->PDIR&(1<<13))==0)))       /*If switch2 is pressed and switch 3 is not pressed*/
+		if ((PTC->PDIR & (1<<12))&& ((PTC->PDIR&(1<<13))==0))       /*If switch2 is pressed and switch 3 is not pressed*/
 		{
 			ui32_lpit0_ch0_flag_counter=0;                               /*Initialize ch0 flag counter */
 			LPIT0_chan0_init();                                     /* Initialize ch0  */
@@ -111,11 +112,11 @@ void PORTC_IRQHandler(void)  /* Interrupts for pressed buttons  */
 		   }
 	   }
 	  }
-	else if (ui8_Register & 1<<13&&(uc8_Anti_Pinch==0))                      /*If interrupt has been caused by sw3 (Button Down) and the antipinch function is not on execution */
+	else if ((ui8_Register & 1<<13)&&(uc8_Anti_Pinch==0))                      /*If interrupt has been caused by sw3 (Button Down) and the antipinch function is not on execution */
 	   {
 
 		PORTC->PCR[13] |= (1 << 24);                                /*Clean the interrupt flag*/
-		if (PTC->PDIR & (1<<13)&& ((PTC->PDIR&(1<<12))==0)){        /*If switch2 is pressed and switch 3 is not pressed*/
+		if ((PTC->PDIR & (1<<13))&& ((PTC->PDIR&(1<<12))==0)){        /*If switch2 is pressed and switch 3 is not pressed*/
 			ui32_lpit0_ch0_flag_counter=0;                               /* Start ch0 timeout counter  */
 			LPIT0_chan0_init();                                     /* Initialize ch0  */
 		}

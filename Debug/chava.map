@@ -79,47 +79,7 @@ Discarded input sections
  .comment       0x00000000       0x71 ./src/output_functions.o
  .ARM.attributes
                 0x00000000       0x33 ./src/output_functions.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .group         0x00000000        0x8 ./src/macros.o
- .text          0x00000000        0x0 ./src/macros.o
- .data          0x00000000        0x0 ./src/macros.o
- .bss           0x00000000        0x0 ./src/macros.o
- .debug_info    0x00000000       0x6f ./src/macros.o
- .debug_abbrev  0x00000000       0x29 ./src/macros.o
- .debug_aranges
-                0x00000000       0x18 ./src/macros.o
- .debug_macro   0x00000000      0x106 ./src/macros.o
- .debug_macro   0x00000000      0x868 ./src/macros.o
- .debug_macro   0x00000000       0x52 ./src/macros.o
- .debug_macro   0x00000000       0xa0 ./src/macros.o
- .debug_macro   0x00000000       0x16 ./src/macros.o
- .debug_macro   0x00000000       0x19 ./src/macros.o
- .debug_macro   0x00000000       0x64 ./src/macros.o
- .debug_macro   0x00000000      0x185 ./src/macros.o
- .debug_macro   0x00000000      0x140 ./src/macros.o
- .debug_macro   0x00000000       0x9d ./src/macros.o
- .debug_macro   0x00000000       0x10 ./src/macros.o
- .debug_macro   0x00000000      0x15b ./src/macros.o
- .debug_macro   0x00000000       0x28 ./src/macros.o
- .debug_macro   0x00000000       0x58 ./src/macros.o
- .debug_macro   0x00000000     0xdf8d ./src/macros.o
- .debug_line    0x00000000      0x1b4 ./src/macros.o
- .debug_str     0x00000000    0x5ddd9 ./src/macros.o
- .comment       0x00000000       0x71 ./src/macros.o
- .ARM.attributes
-                0x00000000       0x33 ./src/macros.o
+ .group         0x00000000        0x8 ./src/lpti0_functions.o
  .group         0x00000000        0x8 ./src/lpti0_functions.o
  .group         0x00000000        0x8 ./src/lpti0_functions.o
  .group         0x00000000        0x8 ./src/lpti0_functions.o
@@ -173,6 +133,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x52 ./src/initialization_functions.o
  .debug_macro   0x00000000       0xa0 ./src/initialization_functions.o
  .debug_macro   0x00000000       0x16 ./src/initialization_functions.o
+ .debug_macro   0x00000000       0x82 ./src/initialization_functions.o
  .debug_macro   0x00000000       0x19 ./src/initialization_functions.o
  .debug_macro   0x00000000       0x64 ./src/initialization_functions.o
  .debug_macro   0x00000000      0x185 ./src/initialization_functions.o
@@ -209,6 +170,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x52 ./src/hello.o
  .debug_macro   0x00000000       0xa0 ./src/hello.o
  .debug_macro   0x00000000       0x16 ./src/hello.o
+ .debug_macro   0x00000000       0x82 ./src/hello.o
  .debug_macro   0x00000000       0x19 ./src/hello.o
  .debug_macro   0x00000000       0x64 ./src/hello.o
  .debug_macro   0x00000000      0x185 ./src/hello.o
@@ -219,7 +181,6 @@ Discarded input sections
  .debug_macro   0x00000000       0x28 ./src/hello.o
  .debug_macro   0x00000000       0x58 ./src/hello.o
  .debug_macro   0x00000000     0xdf8d ./src/hello.o
- .debug_macro   0x00000000       0x64 ./src/hello.o
  .group         0x00000000        0x8 ./src/clocks_and_modes.o
  .group         0x00000000        0x8 ./src/clocks_and_modes.o
  .group         0x00000000        0x8 ./src/clocks_and_modes.o
@@ -495,7 +456,6 @@ Linker script and memory map
 
 LOAD D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/lib/armv7e-m/__arm_start.o
 LOAD ./src/output_functions.o
-LOAD ./src/macros.o
 LOAD ./src/lpti0_functions.o
 LOAD ./src/initialization_functions.o
 LOAD ./src/hello.o
@@ -911,23 +871,23 @@ LOAD D:/Programs/NXP/S32DS_ARM_v2018.R1/S32DS/arm_ewl2/lib/armv7e-m/__arm_end.o
                 0x00000001                ASSERT ((__StackLimit >= __HeapLimit), region m_data_2 overflowed with stack and heap)
 OUTPUT(chava.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x16be
+.debug_info     0x00000000     0x1608
  .debug_info    0x00000000      0x20c ./src/lpti0_functions.o
  .debug_info    0x0000020c      0x3d6 ./src/initialization_functions.o
- .debug_info    0x000005e2      0x4fa ./src/hello.o
- .debug_info    0x00000adc      0x269 ./src/clocks_and_modes.o
- .debug_info    0x00000d45      0x500 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_info    0x00001245       0x8e ./Project_Settings/Startup_Code/startup_S32K144.o
- .debug_info    0x000012d3      0x3eb ./Project_Settings/Startup_Code/startup.o
+ .debug_info    0x000005e2      0x444 ./src/hello.o
+ .debug_info    0x00000a26      0x269 ./src/clocks_and_modes.o
+ .debug_info    0x00000c8f      0x500 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_info    0x0000118f       0x8e ./Project_Settings/Startup_Code/startup_S32K144.o
+ .debug_info    0x0000121d      0x3eb ./Project_Settings/Startup_Code/startup.o
 
-.debug_abbrev   0x00000000      0x614
+.debug_abbrev   0x00000000      0x5d0
  .debug_abbrev  0x00000000       0xde ./src/lpti0_functions.o
  .debug_abbrev  0x000000de       0xf6 ./src/initialization_functions.o
- .debug_abbrev  0x000001d4      0x151 ./src/hello.o
- .debug_abbrev  0x00000325       0xc2 ./src/clocks_and_modes.o
- .debug_abbrev  0x000003e7      0x118 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_abbrev  0x000004ff       0x14 ./Project_Settings/Startup_Code/startup_S32K144.o
- .debug_abbrev  0x00000513      0x101 ./Project_Settings/Startup_Code/startup.o
+ .debug_abbrev  0x000001d4      0x10d ./src/hello.o
+ .debug_abbrev  0x000002e1       0xc2 ./src/clocks_and_modes.o
+ .debug_abbrev  0x000003a3      0x118 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_abbrev  0x000004bb       0x14 ./Project_Settings/Startup_Code/startup_S32K144.o
+ .debug_abbrev  0x000004cf      0x101 ./Project_Settings/Startup_Code/startup.o
 
 .debug_aranges  0x00000000      0x178
  .debug_aranges
@@ -953,41 +913,41 @@ OUTPUT(chava.elf elf32-littlearm)
  .debug_ranges  0x000000c8       0x20 ./Project_Settings/Startup_Code/system_S32K144.o
  .debug_ranges  0x000000e8       0x10 ./Project_Settings/Startup_Code/startup.o
 
-.debug_macro    0x00000000      0xf72
- .debug_macro   0x00000000       0xb0 ./src/lpti0_functions.o
- .debug_macro   0x000000b0       0xd1 ./src/initialization_functions.o
- .debug_macro   0x00000181       0x64 ./src/initialization_functions.o
- .debug_macro   0x000001e5       0xd1 ./src/hello.o
- .debug_macro   0x000002b6       0xb0 ./src/clocks_and_modes.o
- .debug_macro   0x00000366       0xe9 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x0000044f       0x10 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x0000045f       0x6d ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x000004cc      0x978 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x00000e44       0x22 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x00000e66       0x22 ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_macro   0x00000e88       0xea ./Project_Settings/Startup_Code/startup.o
+.debug_macro    0x00000000      0xf9b
+ .debug_macro   0x00000000       0xb9 ./src/lpti0_functions.o
+ .debug_macro   0x000000b9       0x82 ./src/lpti0_functions.o
+ .debug_macro   0x0000013b       0xcd ./src/initialization_functions.o
+ .debug_macro   0x00000208       0xd7 ./src/hello.o
+ .debug_macro   0x000002df       0xb0 ./src/clocks_and_modes.o
+ .debug_macro   0x0000038f       0xe9 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x00000478       0x10 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x00000488       0x6d ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x000004f5      0x978 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x00000e6d       0x22 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x00000e8f       0x22 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_macro   0x00000eb1       0xea ./Project_Settings/Startup_Code/startup.o
 
-.debug_line     0x00000000     0x1031
- .debug_line    0x00000000      0x226 ./src/lpti0_functions.o
- .debug_line    0x00000226      0x2a8 ./src/initialization_functions.o
- .debug_line    0x000004ce      0x388 ./src/hello.o
- .debug_line    0x00000856      0x235 ./src/clocks_and_modes.o
- .debug_line    0x00000a8b      0x2af ./Project_Settings/Startup_Code/system_S32K144.o
- .debug_line    0x00000d3a       0x83 ./Project_Settings/Startup_Code/startup_S32K144.o
- .debug_line    0x00000dbd      0x274 ./Project_Settings/Startup_Code/startup.o
+.debug_line     0x00000000     0x1050
+ .debug_line    0x00000000      0x232 ./src/lpti0_functions.o
+ .debug_line    0x00000232      0x2a8 ./src/initialization_functions.o
+ .debug_line    0x000004da      0x39b ./src/hello.o
+ .debug_line    0x00000875      0x235 ./src/clocks_and_modes.o
+ .debug_line    0x00000aaa      0x2af ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_line    0x00000d59       0x83 ./Project_Settings/Startup_Code/startup_S32K144.o
+ .debug_line    0x00000ddc      0x274 ./Project_Settings/Startup_Code/startup.o
 
-.debug_str      0x00000000    0x62a90
- .debug_str     0x00000000    0x5dc6a ./src/lpti0_functions.o
-                              0x5dcfa (size before relaxing)
- .debug_str     0x0005dc6a      0x321 ./src/initialization_functions.o
-                              0x5df6d (size before relaxing)
- .debug_str     0x0005df8b      0x143 ./src/hello.o
-                              0x5e04c (size before relaxing)
- .debug_str     0x0005e0ce       0xd1 ./src/clocks_and_modes.o
+.debug_str      0x00000000    0x62b0b
+ .debug_str     0x00000000    0x5de8c ./src/lpti0_functions.o
+                              0x5df1c (size before relaxing)
+ .debug_str     0x0005de8c      0x17a ./src/initialization_functions.o
+                              0x5dfe8 (size before relaxing)
+ .debug_str     0x0005e006      0x143 ./src/hello.o
+                              0x5e099 (size before relaxing)
+ .debug_str     0x0005e149       0xd1 ./src/clocks_and_modes.o
                               0x5dd5c (size before relaxing)
- .debug_str     0x0005e19f     0x47d1 ./Project_Settings/Startup_Code/system_S32K144.o
+ .debug_str     0x0005e21a     0x47d1 ./Project_Settings/Startup_Code/system_S32K144.o
                               0x624e5 (size before relaxing)
- .debug_str     0x00062970      0x120 ./Project_Settings/Startup_Code/startup.o
+ .debug_str     0x000629eb      0x120 ./Project_Settings/Startup_Code/startup.o
                               0x6241c (size before relaxing)
 
 .comment        0x00000000       0x70

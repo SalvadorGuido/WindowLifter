@@ -1,5 +1,4 @@
 "./src/output_functions.o"
-"./src/macros.o"
 "./src/lpti0_functions.o"
 "./src/initialization_functions.o"
 "./src/hello.o"
